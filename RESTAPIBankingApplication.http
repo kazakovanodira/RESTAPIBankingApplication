@@ -1,6 +1,13 @@
-@RESTAPIBankingApplication_HostAddress = http://localhost:5283
+@rootURL = http://localhost:5283
 
 GET {{RESTAPIBankingApplication_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+GET {{rootURL}}/api/account/nadi
+Accept: application/json
+
+
+###
+POST {{rootURL}}/api/account/natalie
+Content-Type: application/json
