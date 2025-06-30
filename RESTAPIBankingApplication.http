@@ -1,0 +1,6 @@
+@RESTAPIBankingApplication_HostAddress = http://localhost:5283
+
+GET {{RESTAPIBankingApplication_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
