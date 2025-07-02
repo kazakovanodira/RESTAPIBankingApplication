@@ -1,59 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
+using RESTAPIBankingApplication.Interface;
 using RESTAPIBankingApplication.Models;
+using RESTAPIBankingApplication.Models.Requests;
+using RESTAPIBankingApplication.Services;
 
 namespace RESTAPIBankingApplication.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 
-public class AccountController : ControllerBase
+public class AccountsController : ControllerBase
 {
-    static private List<Account> accounts = new List<Account>
-    {
-        new Account()
-        {
-            AccountNumber = Guid.NewGuid(),
-            Balance = 100,
-            Name = "nadi"
-        },
-
-        new Account()
-        {
-            AccountNumber = Guid.NewGuid(),
-            Balance = 100,
-            Name = "stan"
-        }
-    };
+    private readonly IAccountsService _accountsService = new AccountsServices();
+    public AccountRequest AccountRequest = new AccountRequest();
+    public CreateAccountRequest CreateAccountRequest = new CreateAccountRequest();
+    public TransactionRequest TransactionRequest = new TransactionRequest();
     
-    [HttpGet("{name}")]
-    public ActionResult<Account> GetAccount(string name)
+    
+    [HttpPost]
+    public ActionResult<IActionResult> CreateNewAccount([FromBody]string newName)
     {
-        var account = accounts.FirstOrDefault(x => x.Name  == name);
-        if (account == null)
+        CreateAccountRequest.Name = newName;
+        return _accountsService.CreateAccount(CreateAccountRequest);
+        return CreatedAtAction(nameof(CreateNewAccount), new { name = newName }, accounts.Last());
+    }
+
+    [HttpGet("{accountNumber}")]
+    public ActionResult<Account> GetAccount(int accountNumber)
+    {
+        var account = accounts.FirstOrDefault(x => x.AccountNumber == accountNumber);
+        if (account is null)
         {
             return NotFound();
         }
-        return Ok(account);
+        return account;
     }
-
-    [HttpPost("{newName}")]
-    public ActionResult<Account> CreateNewAccount(string newName)
-    {
-        if (newName == null)
-        {
-            return BadRequest();
-        }
-
-        var newAccount = new Account()
-        {
-            AccountNumber = Guid.NewGuid(),
-            Balance = 0,
-            Name = newName
-        };
-        
-        accounts.Add(newAccount);
-        return CreatedAtAction(nameof(GetAccount), new { name = newName }, accounts.Last());
-    }
-    
-    
 }
