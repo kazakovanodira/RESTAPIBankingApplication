@@ -33,7 +33,65 @@ public class AccountsController : ControllerBase
         return Ok(account);
     }
     
+    [HttpGet("{accountNumber}/deposits")]
+    public async Task<IActionResult> MakeDeposit(Guid accountNumber,[FromBody] TransactionRequest request)
+    {
+        var account = _accountsService.MakeDeposit(new TransactionRequest()
+        {
+            SenderAccId = accountNumber,
+            Amount = request.Amount,
+        });
+        
+        if (account is null)
+        {
+            return NotFound();
+        }
+        return Ok(account);
+    }
     
+    [HttpGet("{accountNumber}/withdrawals")]
+    public async Task<IActionResult> MakeWithdrawal(Guid accountNumber,[FromBody] TransactionRequest request)
+    {
+        var account = _accountsService.MakeWithdraw(new TransactionRequest()
+        {
+            SenderAccId = accountNumber,
+            Amount = request.Amount,
+        });
+        
+        if (account is null)
+        {
+            return NotFound();
+        }
+        return Ok(account);
+    }
+    
+    [HttpGet("transfer")]
+    public async Task<IActionResult> MakeTransfer([FromBody] TransactionRequest request)
+    {
+        var account = _accountsService.MakeWithdraw(new TransactionRequest()
+        {
+            SenderAccId = request.SenderAccId,
+            ReceiverAccId = request.ReceiverAccId,
+            Amount = request.Amount,
+        });
+        
+        if (account is null)
+        {
+            return NotFound();
+        }
+        return Ok(account);
+    }
+    
+    [HttpGet("{accountNumber}")]
+    public async Task<IActionResult> CheckBalance(Guid accountNumber)
+    {
+        var account = _accountsService.CheckBalance(new AccountRequest { AccountId = accountNumber });
+        if (account is null)
+        {
+            return NotFound();
+        }
+        return Ok(account);
+    }
     
     
 }
