@@ -9,6 +9,11 @@ namespace RESTAPIBankingApplication.Services;
 public class AccountsServices : IAccountsService
 {
     private AccountsContext _context;
+    public AccountsServices(AccountsContext context)
+    {
+        _context = context;
+    }
+
 
     public ApiResponse<AccountResponse> CreateAccount(CreateAccountRequest request)
     {

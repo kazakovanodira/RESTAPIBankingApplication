@@ -1,12 +1,11 @@
 @rootURL = http://localhost:5283
 
-GET {{rootURL}}/api/Account/0
-Accept: application/json
-
 ###
-POST http://localhost:5283/api/Account
+POST {{rootURL}}/api/Accounts
+Accept: application/json
 Content-Type: application/json
 
-"rrrrrrrrr"
-
+{
+  "Name" : "nodira"
+}
 

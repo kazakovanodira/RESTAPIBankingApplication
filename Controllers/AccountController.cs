@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using RESTAPIBankingApplication.Interface;
 using RESTAPIBankingApplication.Models;
 using RESTAPIBankingApplication.Models.Requests;
+using RESTAPIBankingApplication.Models.Responses;
 using RESTAPIBankingApplication.Services;
 
 namespace RESTAPIBankingApplication.Controllers;
@@ -11,21 +12,23 @@ namespace RESTAPIBankingApplication.Controllers;
 
 public class AccountsController : ControllerBase
 {
-    private readonly IAccountsService _accountsService = new AccountsServices();
+    private readonly IAccountsService _accountsService;
     public AccountRequest AccountRequest = new AccountRequest();
     public CreateAccountRequest CreateAccountRequest = new CreateAccountRequest();
     public TransactionRequest TransactionRequest = new TransactionRequest();
-    
-    
-    [HttpPost]
-    public ActionResult<IActionResult> CreateNewAccount([FromBody]string newName)
+    public AccountsController(IAccountsService service)
     {
-        CreateAccountRequest.Name = newName;
-        return _accountsService.CreateAccount(CreateAccountRequest);
-        return CreatedAtAction(nameof(CreateNewAccount), new { name = newName }, accounts.Last());
+        _accountsService = service;
     }
 
-    [HttpGet("{accountNumber}")]
+    [HttpPost]
+    public async Task<IActionResult> CreateNewAccount([FromBody] CreateAccountRequest request)
+    {
+        var acc = _accountsService.CreateAccount(request);
+        return Ok(acc);
+    }
+
+    /*[HttpGet("{accountNumber}")]
     public ActionResult<Account> GetAccount(int accountNumber)
     {
         var account = accounts.FirstOrDefault(x => x.AccountNumber == accountNumber);
@@ -34,5 +37,5 @@ public class AccountsController : ControllerBase
             return NotFound();
         }
         return account;
-    }
+    }*/
 }

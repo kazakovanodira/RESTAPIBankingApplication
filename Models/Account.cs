@@ -1,8 +1,18 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
 namespace RESTAPIBankingApplication.Models;
 
 public class Account
 {
-    public Guid AccountNumber { get; set; }
-    public string? Name { get; set; } = null!;
-    public decimal Balance { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; } 
+    [Required]
+    public string? Name { get; set; } = string.Empty;
+    [Required]
+    public Guid AccountNumber { get; set; } = Guid.Empty;
+    [Required]
+    public decimal Balance { get; set; } = 0;
 }
