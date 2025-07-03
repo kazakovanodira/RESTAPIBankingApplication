@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace RESTAPIBankingApplication.Models.Requests;
 
 public class AccountRequest
