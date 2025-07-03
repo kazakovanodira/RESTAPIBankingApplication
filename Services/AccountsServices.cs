@@ -8,12 +8,11 @@ namespace RESTAPIBankingApplication.Services;
 
 public class AccountsServices : IAccountsService
 {
-    private AccountsContext _context;
-    public AccountsServices(AccountsContext context)
+    private readonly AccountsContext _context;
+    private AccountsServices(AccountsContext context)
     {
         _context = context;
     }
-
 
     public ApiResponse<AccountResponse> CreateAccount(CreateAccountRequest request)
     {
@@ -25,7 +24,9 @@ public class AccountsServices : IAccountsService
         };
         
         _context.Accounts.Add(account);
-        var response = new ApiResponse<AccountResponse>
+        _context.SaveChanges();
+
+        return new ApiResponse<AccountResponse>
         {
             Result = new AccountResponse
             {
@@ -35,9 +36,6 @@ public class AccountsServices : IAccountsService
             },
             HttpStatusCode = 200
         };
-        
-        _context.SaveChanges();
-        return response;
     }
 
     public ApiResponse<AccountResponse> GetAccount(AccountRequest request)
@@ -58,7 +56,8 @@ public class AccountsServices : IAccountsService
                 AccountId = account.AccountNumber,
                 Balance = account.Balance,
                 Name = account.Name,
-            }
+            },
+            HttpStatusCode = 200
         };
     }
 
@@ -81,7 +80,8 @@ public class AccountsServices : IAccountsService
             Result = new BalanceResponse
             {
                 Balance =  account.Balance,
-            }
+            },
+            HttpStatusCode = 200
         };
     }
 
@@ -96,6 +96,16 @@ public class AccountsServices : IAccountsService
                 HttpStatusCode = 404
             };
         }
+
+        if (account.Balance < request.Amount)
+        {
+            return new ApiResponse<BalanceResponse>
+            {
+                ErrorMessage = "Not enough balance.",
+                HttpStatusCode = 400
+            };
+        }
+        
         account.Balance -= request.Amount;
         _context.SaveChanges();
         
@@ -104,7 +114,8 @@ public class AccountsServices : IAccountsService
             Result = new BalanceResponse
             {
                 Balance =  account.Balance,
-            }
+            },
+            HttpStatusCode = 200
         };
     }
 
@@ -121,6 +132,15 @@ public class AccountsServices : IAccountsService
             };
         }
         
+        if (sender.Balance < request.Amount)
+        {
+            return new ApiResponse<BalanceResponse>
+            {
+                ErrorMessage = "Not enough balance.",
+                HttpStatusCode = 400
+            };
+        }
+        
         sender.Balance -= request.Amount;
         receiver.Balance += request.Amount;
         _context.SaveChanges();
@@ -130,7 +150,8 @@ public class AccountsServices : IAccountsService
             Result = new BalanceResponse
             {
                 Balance =  sender.Balance,
-            }
+            },
+            HttpStatusCode = 200
         };
     }
 
@@ -151,7 +172,8 @@ public class AccountsServices : IAccountsService
             Result = new BalanceResponse
             {
                 Balance = account.Balance,
-            }
+            },
+            HttpStatusCode = 200
         };
     }
 }
