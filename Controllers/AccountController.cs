@@ -16,7 +16,7 @@ public class AccountsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateNewAccount([FromBody] CreateAccountRequest request)
+    public IActionResult CreateNewAccount([FromBody] CreateAccountRequest request)
     {
         var account = _accountsService.CreateAccount(request);
         return Ok(account);
@@ -81,17 +81,4 @@ public class AccountsController : ControllerBase
         }
         return Ok(account);
     }
-    
-    [HttpGet("{accountNumber}")]
-    public async Task<IActionResult> CheckBalance(Guid accountNumber)
-    {
-        var account = _accountsService.CheckBalance(new AccountRequest { AccountId = accountNumber });
-        if (account is null)
-        {
-            return NotFound();
-        }
-        return Ok(account);
-    }
-    
-    
 }

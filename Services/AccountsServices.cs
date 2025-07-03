@@ -154,26 +154,4 @@ public class AccountsServices : IAccountsService
             HttpStatusCode = 200
         };
     }
-
-    public ApiResponse<BalanceResponse> CheckBalance(AccountRequest request)
-    {
-        var account = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.AccountId);
-        if (account is null)
-        {
-            return new ApiResponse<BalanceResponse>
-            {
-                ErrorMessage = "Account not found.",
-                HttpStatusCode = 404
-            };
-        }
-        
-        return new ApiResponse<BalanceResponse>
-        {
-            Result = new BalanceResponse
-            {
-                Balance = account.Balance,
-            },
-            HttpStatusCode = 200
-        };
-    }
 }
