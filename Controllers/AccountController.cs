@@ -18,13 +18,22 @@ public class AccountsController : ControllerBase
     [HttpPost]
     public IActionResult CreateNewAccount([FromBody] CreateAccountRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var account = _accountsService.CreateAccount(request);
         return Ok(account);
     }
 
     [HttpGet("{accountNumber}")]
-    public async Task<IActionResult> GetAccount(Guid accountNumber)
+    public IActionResult GetAccount(Guid accountNumber)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         var account = _accountsService.GetAccount(new AccountRequest { AccountId = accountNumber });
         if (account is null)
         {
@@ -34,8 +43,13 @@ public class AccountsController : ControllerBase
     }
     
     [HttpGet("{accountNumber}/deposits")]
-    public async Task<IActionResult> MakeDeposit(Guid accountNumber,[FromBody] TransactionRequest request)
+    public IActionResult MakeDeposit(Guid accountNumber,[FromBody] TransactionRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var account = _accountsService.MakeDeposit(new TransactionRequest()
         {
             SenderAccId = accountNumber,
@@ -50,8 +64,13 @@ public class AccountsController : ControllerBase
     }
     
     [HttpGet("{accountNumber}/withdrawals")]
-    public async Task<IActionResult> MakeWithdrawal(Guid accountNumber,[FromBody] TransactionRequest request)
+    public IActionResult MakeWithdrawal(Guid accountNumber,[FromBody] TransactionRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
         var account = _accountsService.MakeWithdraw(new TransactionRequest()
         {
             SenderAccId = accountNumber,
@@ -66,9 +85,14 @@ public class AccountsController : ControllerBase
     }
     
     [HttpGet("transfer")]
-    public async Task<IActionResult> MakeTransfer([FromBody] TransactionRequest request)
+    public IActionResult MakeTransfer([FromBody] TransactionRequest request)
     {
-        var account = _accountsService.MakeWithdraw(new TransactionRequest()
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        var account = _accountsService.MakeTransfer(new TransactionRequest()
         {
             SenderAccId = request.SenderAccId,
             ReceiverAccId = request.ReceiverAccId,

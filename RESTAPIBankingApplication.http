@@ -23,3 +23,41 @@ Content-Type: application/json
 {
   "Amount": "100"
 }
+
+###
+GET {{rootURL}}/api/Accounts/71538b8e-14d7-481c-aa8d-34f4f78a33a6/withdrawals
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Amount": "100"
+}
+
+###
+POST {{rootURL}}/api/Accounts
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Name" : "joe"
+}
+
+###
+GET {{rootURL}}/api/Accounts/transfer
+Accept: application/json
+Content-Type: application/json
+
+{
+  "SenderAccId": "7aceee3e-2314-4598-b268-eeecf50b41a0",
+  "ReceiverAccId": "71538b8e-14d7-481c-aa8d-34f4f78a33a6",
+  "Amount": "100"
+}
+
+###
+GET {{rootURL}}/api/Accounts/7aceee3e-2314-4598-b268-eeecf50b41a0/deposits
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Amount": "100"
+}

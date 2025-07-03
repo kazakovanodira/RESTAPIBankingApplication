@@ -9,7 +9,7 @@ namespace RESTAPIBankingApplication.Services;
 public class AccountsServices : IAccountsService
 {
     private readonly AccountsContext _context;
-    private AccountsServices(AccountsContext context)
+    public AccountsServices(AccountsContext context)
     {
         _context = context;
     }
