@@ -171,6 +171,15 @@ public class AccountsServices : IAccountsService
             };
         }
         
+        if (request.Amount <= 0)
+        {
+            return new ApiResponse<BalanceResponse>
+            {
+                ErrorMessage = "Transaction amount must be greater than zero.",
+                HttpStatusCode = 400
+            };
+        }
+        
         var sender = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.SenderAccId);
         var receiver = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.ReceiverAccId);
         
