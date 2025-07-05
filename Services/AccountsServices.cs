@@ -16,6 +16,15 @@ public class AccountsServices : IAccountsService
 
     public ApiResponse<AccountResponse> CreateAccount(CreateAccountRequest request)
     {
+        if (request is null)
+        {
+            return new ApiResponse<AccountResponse>
+            {
+                ErrorMessage = "Request body is required.",
+                HttpStatusCode = 400
+            };
+        }
+
         var account = new  Account
         {
             Name = request.Name,
@@ -34,13 +43,23 @@ public class AccountsServices : IAccountsService
                 Balance = account.Balance,
                 Name = account.Name,
             },
-            HttpStatusCode = 200
+            HttpStatusCode = 201
         };
     }
 
     public ApiResponse<AccountResponse> GetAccount(AccountRequest request)
     {
+        if (request == null)
+        {
+            return new ApiResponse<AccountResponse>
+            {
+                ErrorMessage = "Request body is required.",
+                HttpStatusCode = 400
+            };
+        }
+        
         var account = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.AccountId);
+        
         if (account is null)
         {
             return new ApiResponse<AccountResponse>
@@ -49,6 +68,7 @@ public class AccountsServices : IAccountsService
                 HttpStatusCode = 404
             };
         }
+        
         return new ApiResponse<AccountResponse>
         {
             Result = new AccountResponse
@@ -63,7 +83,17 @@ public class AccountsServices : IAccountsService
 
     public ApiResponse<BalanceResponse> MakeDeposit(TransactionRequest request)
     {
+        if (request == null)
+        {
+            return new ApiResponse<BalanceResponse>
+            {
+                ErrorMessage = "Request body is required.",
+                HttpStatusCode = 400
+            };
+        }
+        
         var account = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.SenderAccId);
+        
         if (account is null)
         {
             return new ApiResponse<BalanceResponse>
@@ -72,6 +102,7 @@ public class AccountsServices : IAccountsService
                 HttpStatusCode = 404
             };
         }
+        
         account.Balance += request.Amount;
         _context.SaveChanges();
         
@@ -87,7 +118,17 @@ public class AccountsServices : IAccountsService
 
     public ApiResponse<BalanceResponse> MakeWithdraw(TransactionRequest request)
     {
+        if (request == null)
+        {
+            return new ApiResponse<BalanceResponse>
+            {
+                ErrorMessage = "Request body is required.",
+                HttpStatusCode = 400
+            };
+        }
+        
         var account = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.SenderAccId);
+        
         if (account is null)
         {
             return new ApiResponse<BalanceResponse>
@@ -121,8 +162,18 @@ public class AccountsServices : IAccountsService
 
     public ApiResponse<BalanceResponse> MakeTransfer(TransactionRequest request)
     {
+        if (request == null)
+        {
+            return new ApiResponse<BalanceResponse>
+            {
+                ErrorMessage = "Request body is required.",
+                HttpStatusCode = 400
+            };
+        }
+        
         var sender = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.SenderAccId);
         var receiver = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.ReceiverAccId);
+        
         if (sender is null || receiver is null)
         {
             return new ApiResponse<BalanceResponse>

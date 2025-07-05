@@ -24,7 +24,13 @@ public class AccountsController : ControllerBase
         }
         
         var account = _accountsService.CreateAccount(request);
-        return Ok(account);
+        
+        if (!account.IsSuccess)
+        {
+            return StatusCode(account.HttpStatusCode, account);
+        }
+        
+        return CreatedAtAction(nameof(GetAccount), new { accountNumber = account.Result.AccountId }, account);
     }
 
     [HttpGet("{accountNumber}")]
@@ -35,14 +41,14 @@ public class AccountsController : ControllerBase
             return BadRequest(ModelState);
         }
         var account = _accountsService.GetAccount(new AccountRequest { AccountId = accountNumber });
-        if (account is null)
+        if (!account.IsSuccess)
         {
-            return NotFound();
+            return StatusCode(account.HttpStatusCode, account);
         }
         return Ok(account);
     }
     
-    [HttpGet("{accountNumber}/deposits")]
+    [HttpPost("{accountNumber}/deposits")]
     public IActionResult MakeDeposit(Guid accountNumber,[FromBody] TransactionRequest request)
     {
         if (!ModelState.IsValid)
@@ -56,14 +62,14 @@ public class AccountsController : ControllerBase
             Amount = request.Amount,
         });
         
-        if (account is null)
+        if (!account.IsSuccess)
         {
-            return NotFound();
+            return StatusCode(account.HttpStatusCode, account);
         }
         return Ok(account);
     }
     
-    [HttpGet("{accountNumber}/withdrawals")]
+    [HttpPost("{accountNumber}/withdrawals")]
     public IActionResult MakeWithdrawal(Guid accountNumber,[FromBody] TransactionRequest request)
     {
         if (!ModelState.IsValid)
@@ -77,14 +83,14 @@ public class AccountsController : ControllerBase
             Amount = request.Amount,
         });
         
-        if (account is null)
+        if (!account.IsSuccess)
         {
-            return NotFound();
+            return StatusCode(account.HttpStatusCode, account);
         }
         return Ok(account);
     }
     
-    [HttpGet("transfer")]
+    [HttpPost("transfer")]
     public IActionResult MakeTransfer([FromBody] TransactionRequest request)
     {
         if (!ModelState.IsValid)
@@ -99,9 +105,9 @@ public class AccountsController : ControllerBase
             Amount = request.Amount,
         });
         
-        if (account is null)
+        if (!account.IsSuccess)
         {
-            return NotFound();
+            return StatusCode(account.HttpStatusCode, account);
         }
         return Ok(account);
     }

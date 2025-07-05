@@ -16,7 +16,7 @@ Accept: application/json
 Content-Type: application/json
 
 ###
-GET {{rootURL}}/api/Accounts/71538b8e-14d7-481c-aa8d-34f4f78a33a6/deposits
+POST {{rootURL}}/api/Accounts/71538b8e-14d7-481c-aa8d-34f4f78a33a6/deposits
 Accept: application/json
 Content-Type: application/json
 
@@ -25,7 +25,7 @@ Content-Type: application/json
 }
 
 ###
-GET {{rootURL}}/api/Accounts/71538b8e-14d7-481c-aa8d-34f4f78a33a6/withdrawals
+POST {{rootURL}}/api/Accounts/71538b8e-14d7-481c-aa8d-34f4f78a33a6/withdrawals
 Accept: application/json
 Content-Type: application/json
 
@@ -43,7 +43,7 @@ Content-Type: application/json
 }
 
 ###
-GET {{rootURL}}/api/Accounts/transfer
+POST {{rootURL}}/api/Accounts/transfer
 Accept: application/json
 Content-Type: application/json
 
@@ -54,7 +54,7 @@ Content-Type: application/json
 }
 
 ###
-GET {{rootURL}}/api/Accounts/7aceee3e-2314-4598-b268-eeecf50b41a0/deposits
+POST {{rootURL}}/api/Accounts/7aceee3e-2314-4598-b268-eeecf50b41a0/deposits
 Accept: application/json
 Content-Type: application/json
 
