@@ -6,10 +6,11 @@ namespace RESTAPIBankingApplication.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AccountsController : ControllerBase
+public class AccountController : ControllerBase
 {
     private readonly IAccountsService _accountsService;
-    public AccountsController(IAccountsService service)
+    
+    public AccountController(IAccountsService service)
     {
         _accountsService = service;
     }
