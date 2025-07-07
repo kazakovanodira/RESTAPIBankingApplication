@@ -49,7 +49,7 @@ public class AccountsServices : IAccountsService
 
     public ApiResponse<AccountResponse> GetAccount(AccountRequest request)
     {
-        if (request == null)
+        if (request is null)
         {
             return new ApiResponse<AccountResponse>
             {
@@ -83,7 +83,7 @@ public class AccountsServices : IAccountsService
 
     public ApiResponse<BalanceResponse> MakeDeposit(TransactionRequest request)
     {
-        if (request == null)
+        if (request is null)
         {
             return new ApiResponse<BalanceResponse>
             {
@@ -118,7 +118,7 @@ public class AccountsServices : IAccountsService
 
     public ApiResponse<BalanceResponse> MakeWithdraw(TransactionRequest request)
     {
-        if (request == null)
+        if (request is null)
         {
             return new ApiResponse<BalanceResponse>
             {
@@ -162,7 +162,7 @@ public class AccountsServices : IAccountsService
 
     public ApiResponse<BalanceResponse> MakeTransfer(TransactionRequest request)
     {
-        if (request == null)
+        if (request is null)
         {
             return new ApiResponse<BalanceResponse>
             {
