@@ -48,6 +48,7 @@ public class AccountController : ControllerBase
     {
         if (!ModelState.IsValid)
         {
+            Console.WriteLine("checking what model state does");
             return BadRequest(ModelState);
         }
         var account = _accountsService.GetAccount(new AccountRequest { AccountId = accountNumber });

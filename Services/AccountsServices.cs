@@ -17,7 +17,7 @@ public class AccountsServices : IAccountsService
 
     public ApiResponse<AccountResponse> CreateAccount(CreateAccountRequest request)
     {
-        var account = new  Account
+        var account = new Account
         {
             Name = request.Name,
             Balance = 0,
@@ -29,12 +29,7 @@ public class AccountsServices : IAccountsService
 
         return new ApiResponse<AccountResponse>
         {
-            Result = new AccountResponse
-            {
-                AccountId = account.AccountNumber,
-                Balance = account.Balance,
-                Name = account.Name,
-            },
+            Result = new AccountResponse(account.AccountNumber, account.Name, account.Balance),
             HttpStatusCode = 201
         };
     }
@@ -55,12 +50,7 @@ public class AccountsServices : IAccountsService
         
         return new ApiResponse<AccountResponse>
         {
-            Result = new AccountResponse
-            {
-                AccountId = account.AccountNumber,
-                Balance = account.Balance,
-                Name = account.Name,
-            },
+            Result = new AccountResponse(account.AccountNumber, account.Name, account.Balance),
             HttpStatusCode = 200
         };
     }
@@ -84,10 +74,7 @@ public class AccountsServices : IAccountsService
         
         return new ApiResponse<BalanceResponse>
         {
-            Result = new BalanceResponse
-            {
-                Balance =  account.Balance,
-            },
+            Result = new BalanceResponse(account.Balance),
             HttpStatusCode = 200
         };
     }
@@ -120,10 +107,7 @@ public class AccountsServices : IAccountsService
         
         return new ApiResponse<BalanceResponse>
         {
-            Result = new BalanceResponse
-            {
-                Balance =  account.Balance,
-            },
+            Result = new BalanceResponse(account.Balance),
             HttpStatusCode = 200
         };
     }
@@ -168,10 +152,7 @@ public class AccountsServices : IAccountsService
         
         return new ApiResponse<BalanceResponse>
         {
-            Result = new BalanceResponse
-            {
-                Balance =  sender.Balance,
-            },
+            Result = new BalanceResponse(sender.Balance),
             HttpStatusCode = 200
         };
     }

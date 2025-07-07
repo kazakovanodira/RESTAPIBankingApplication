@@ -17,7 +17,7 @@ builder.Services.AddDbContext<AccountsContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API Name", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bank Application API", Version = "v1" });
 });
 builder.Services.AddScoped<IAccountsService, AccountsServices>();
 
@@ -35,7 +35,7 @@ app.UseAuthorization();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API Name V1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bank Application API V1");
 });
 
 app.MapControllers();

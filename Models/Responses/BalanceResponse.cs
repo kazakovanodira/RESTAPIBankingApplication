@@ -1,6 +1,3 @@
 namespace RESTAPIBankingApplication.Models.Responses;
 
-public class BalanceResponse
-{
-    public decimal Balance { get; set; } =  0;
-}
+public record BalanceResponse(decimal Balance);
