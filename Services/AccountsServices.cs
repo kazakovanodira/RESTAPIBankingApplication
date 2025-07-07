@@ -9,6 +9,7 @@ namespace RESTAPIBankingApplication.Services;
 public class AccountsServices : IAccountsService
 {
     private readonly AccountsContext _context;
+    
     public AccountsServices(AccountsContext context)
     {
         _context = context;
@@ -58,7 +59,8 @@ public class AccountsServices : IAccountsService
             };
         }
         
-        var account = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.AccountId);
+        var account = _context.Accounts.FirstOrDefault(account => 
+            account.AccountNumber == request.AccountId);
         
         if (account is null)
         {
@@ -92,7 +94,8 @@ public class AccountsServices : IAccountsService
             };
         }
         
-        var account = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.SenderAccId);
+        var account = _context.Accounts.FirstOrDefault(account => 
+            account.AccountNumber == request.SenderAccId);
         
         if (account is null)
         {
@@ -127,7 +130,8 @@ public class AccountsServices : IAccountsService
             };
         }
         
-        var account = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.SenderAccId);
+        var account = _context.Accounts.FirstOrDefault(account => 
+            account.AccountNumber == request.SenderAccId);
         
         if (account is null)
         {
@@ -180,8 +184,10 @@ public class AccountsServices : IAccountsService
             };
         }
         
-        var sender = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.SenderAccId);
-        var receiver = _context.Accounts.FirstOrDefault(account => account.AccountNumber == request.ReceiverAccId);
+        var sender = _context.Accounts.FirstOrDefault(account => 
+            account.AccountNumber == request.SenderAccId);
+        var receiver = _context.Accounts.FirstOrDefault(account => 
+            account.AccountNumber == request.ReceiverAccId);
         
         if (sender is null || receiver is null)
         {
