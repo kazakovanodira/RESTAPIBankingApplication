@@ -36,13 +36,13 @@ A simple RESTful banking API built with **ASP.NET Core** and **MySQL** for learn
 - To make a deposit:
   Send a POST request to /api/account/{accountNumber}/deposits with:
   `{
-    "amount": "100.0"
+    "amount": "100"
   }
 `
 - To withdraw:
   POST to /api/account/{accountNumber}/withdrawals with:
   `{
-    "amount": "50.0"
+    "amount": "100"
   }`
 
 - To transfer between accounts:
@@ -50,7 +50,7 @@ A simple RESTful banking API built with **ASP.NET Core** and **MySQL** for learn
   `{
     "senderAccId": "GUID",
     "receiverAccId": "GUID",
-    "amount": "25.0"
+    "amount": "100"
   }`
 
 
