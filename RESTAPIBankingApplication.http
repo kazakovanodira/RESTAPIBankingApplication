@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ###
-GET {{rootURL}}/api/Account/71538b8e-14d7-481c-aa8d-34f4f78a33a6
+GET {{rootURL}}/api/Account/kk
 Accept: application/json
 Content-Type: application/json
 
@@ -20,8 +20,9 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "Amount": "500"
+  "Amount": "0"
 }
+
 
 ###
 POST {{rootURL}}/api/Account/71538b8e-14d7-481c-aa8d-34f4f78a33a6/withdrawals

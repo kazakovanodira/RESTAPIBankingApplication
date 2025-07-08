@@ -1,34 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
 using RESTAPIBankingApplication.Interface;
 using RESTAPIBankingApplication.Models.Requests;
+using RESTAPIBankingApplication.Models.Responses;
 
 namespace RESTAPIBankingApplication.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AccountController : ControllerBase
+public class AccountController(IAccountsService service) : ControllerBase
 {
-    private readonly IAccountsService _accountsService;
-    
-    public AccountController(IAccountsService service)
-    {
-        _accountsService = service;
-    }
-
     /// <summary>
     /// Creates a new bank account with the specified account holder name.
     /// </summary>
     /// <param name="request">Contains the account holder's name.</param>
     /// <returns>The created account details or an error response.</returns>
     [HttpPost]
-    public IActionResult CreateNewAccount([FromBody] CreateAccountRequest request)
+    [ProducesResponseType(typeof(ApiResponse<AccountResponse>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<AccountResponse>), StatusCodes.Status400BadRequest)]
+    public IActionResult  CreateNewAccount([FromBody] CreateAccountRequest request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        
-        var account = _accountsService.CreateAccount(request);
+        var account = service.CreateAccount(request);
         
         if (!account.IsSuccess)
         {
@@ -44,14 +35,11 @@ public class AccountController : ControllerBase
     /// <param name="accountNumber">The unique identifier of the account.</param>
     /// <returns>The account details or an error response if not found.</returns>
     [HttpGet("{accountNumber}")]
-    public IActionResult GetAccount(Guid accountNumber)
+    [ProducesResponseType(typeof(ApiResponse<AccountResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<AccountResponse>), StatusCodes.Status404NotFound)]
+    public IActionResult  GetAccount(Guid accountNumber)
     {
-        if (!ModelState.IsValid)
-        {
-            Console.WriteLine("checking what model state does");
-            return BadRequest(ModelState);
-        }
-        var account = _accountsService.GetAccount(new AccountRequest { AccountId = accountNumber });
+        var account = service.GetAccount(new AccountRequest { AccountId = accountNumber });
         if (!account.IsSuccess)
         {
             return StatusCode(account.HttpStatusCode, account);
@@ -66,14 +54,11 @@ public class AccountController : ControllerBase
     /// <param name="request">The deposit request containing the deposit amount.</param>
     /// <returns>The updated balance or an error response.</returns>
     [HttpPost("{accountNumber}/deposits")]
-    public IActionResult MakeDeposit(Guid accountNumber,[FromBody] TransactionRequest request)
+    [ProducesResponseType(typeof(ApiResponse<BalanceResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<BalanceResponse>), StatusCodes.Status404NotFound)]
+    public IActionResult  MakeDeposit(Guid accountNumber,[FromBody] TransactionRequest request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        
-        var account = _accountsService.MakeDeposit(new TransactionRequest()
+        var account = service.MakeDeposit(new TransactionRequest()
         {
             SenderAccId = accountNumber,
             Amount = request.Amount,
@@ -93,14 +78,12 @@ public class AccountController : ControllerBase
     /// <param name="request">The withdrawal request containing the withdrawal amount.</param>
     /// <returns>The updated balance or an error response.</returns>
     [HttpPost("{accountNumber}/withdrawals")]
-    public IActionResult MakeWithdrawal(Guid accountNumber,[FromBody] TransactionRequest request)
+    [ProducesResponseType(typeof(ApiResponse<BalanceResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<BalanceResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<BalanceResponse>), StatusCodes.Status404NotFound)]
+    public IActionResult  MakeWithdrawal(Guid accountNumber,[FromBody] TransactionRequest request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        
-        var account = _accountsService.MakeWithdraw(new TransactionRequest()
+        var account = service.MakeWithdraw(new TransactionRequest()
         {
             SenderAccId = accountNumber,
             Amount = request.Amount,
@@ -119,14 +102,12 @@ public class AccountController : ControllerBase
     /// <param name="request">The transfer request containing sender, receiver, and transfer amount.</param>
     /// <returns>The updated sender balance or an error response.</returns>
     [HttpPost("transfer")]
-    public IActionResult MakeTransfer([FromBody] TransactionRequest request)
+    [ProducesResponseType(typeof(ApiResponse<BalanceResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<BalanceResponse>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<BalanceResponse>), StatusCodes.Status404NotFound)]
+    public IActionResult  MakeTransfer([FromBody] TransactionRequest request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-        
-        var account = _accountsService.MakeTransfer(new TransactionRequest()
+        var account = service.MakeTransfer(new TransactionRequest()
         {
             SenderAccId = request.SenderAccId,
             ReceiverAccId = request.ReceiverAccId,
